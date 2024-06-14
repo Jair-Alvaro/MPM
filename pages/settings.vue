@@ -18,20 +18,21 @@ const links = [
       to: "/settings/notifications",
     },
   ],
- 
 ];
 </script>
 
 <template>
-  <UDashboardPage>
-    <UDashboardPanel grow>
-      <UDashboardNavbar title="Settings" />
+  <NuxtLayout>
+    <UDashboardPage>
+      <UDashboardPanel grow>
+        <UDashboardNavbar title="Settings" />
 
-      <UDashboardToolbar class="py-0 px-1.5 overflow-x-auto">
-        <UHorizontalNavigation :links="links" />
-      </UDashboardToolbar>
+        <UDashboardToolbar class="py-0 px-1.5 overflow-x-auto">
+          <UHorizontalNavigation :links="links" />
+        </UDashboardToolbar>
 
-      <NuxtPage />
-    </UDashboardPanel>
-  </UDashboardPage>
+        <NuxtPage />
+      </UDashboardPanel>
+    </UDashboardPage>
+  </NuxtLayout>
 </template>

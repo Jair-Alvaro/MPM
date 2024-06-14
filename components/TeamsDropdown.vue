@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const teams = [{
-  label: 'Nuxt',
+  label: 'Min',
   avatar: {
     src: 'https://avatars.githubusercontent.com/u/23360933?s=200&v=4'
   },

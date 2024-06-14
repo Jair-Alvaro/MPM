@@ -61,7 +61,7 @@ const links = [
         //  icon: "i-heroicons-user-group",
         to: "/settings/members",
       },
-    
+
       {
         label: "Notificaciones",
         to: "/settings/notifications",
@@ -118,7 +118,7 @@ const colors = computed(() =>
 </script>
 
 <template>
-  <UDashboardLayout>
+  <UDashboardLayout >
     <UDashboardPanel
       :width="250"
       :resizable="{ min: 200, max: 300 }"
@@ -126,11 +126,13 @@ const colors = computed(() =>
     >
       <UDashboardNavbar class="!border-transparent" :ui="{ left: 'flex-1' }">
         <template #left>
+          <!-- Logo y nombre -->
           <TeamsDropdown />
         </template>
       </UDashboardNavbar>
 
       <UDashboardSidebar>
+          <!-- Buscador -->
         <template #header>
           <UDashboardSearchButton />
         </template>

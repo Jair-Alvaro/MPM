@@ -1,11 +1,16 @@
-<script setup lang="ts">
-const { data: posts, error } = await useFetch("/api/posts");
-</script>
 <template>
-  <div>
-    <UDashboardNavbar title="Maquinas" />
-
-    <pre>{{ posts }}</pre>
-  
-  </div>
+  <NuxtLayout>
+    <UDashboardPage>
+      <UDashboardPanel grow>
+        <UDashboardNavbar title="Maquinas">
+          <template #right>
+            <DashboardHeader />
+          </template>
+        </UDashboardNavbar>
+        <!-- CONTENIDO -->
+      
+        <UDashboardPanelContent> </UDashboardPanelContent>
+      </UDashboardPanel>
+    </UDashboardPage>
+  </NuxtLayout>
 </template>

@@ -16,6 +16,8 @@
     "@iconify-json/simple-icons": "^1.1.101",
     "@nuxt/fonts": "^0.7.0",
     "@nuxt/ui-pro": "^1.2.0",
+    "@nuxtjs/supabase": "^1.2.2",
+    "@supabase/supabase-js": "^2.43.4",
     "@unovis/ts": "^1.4.0",
     "@unovis/vue": "^1.4.0",
     "@vueuse/nuxt": "^10.9.0",
@@ -24,6 +26,7 @@
     "d3": "^7.9.0",
     "date-fns": "^3.6.0",
     "echarts": "^5.5.0",
+    "echarts-gl": "^2.0.9",
     "mongoose": "^8.4.1",
     "nuxt": "^3.11.2",
     "nuxt-mongoose": "^1.0.6",
@@ -33,6 +36,7 @@
   "devDependencies": {
     "@nuxt/eslint": "^0.3.10",
     "eslint": "^8.56.0",
+    "sass": "^1.77.5",
     "vue-tsc": "^2.0.16"
   }
 }

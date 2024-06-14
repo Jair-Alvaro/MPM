@@ -1,4 +1,12 @@
 <script setup lang="ts">
+const router = useRouter();
+const supabase = useSupabaseClient();
+
+async function signOut() {
+  await supabase.auth.signOut();
+  navigateTo("/");
+}
+
 const items = computed(() => [
   [
     {
@@ -18,7 +26,10 @@ const items = computed(() => [
   [
     {
       label: "Sign out",
-      icon: "i-heroicons-arrow-left-on-rectangle",
+      click: async () => {
+        await supabase.auth.signOut();
+        navigateTo("/login");
+      },
     },
   ],
 ]);
@@ -37,7 +48,7 @@ const items = computed(() => [
         color="gray"
         variant="ghost"
         class="w-full"
-        label="Fanny"
+        label="Admin"
         :class="[open && 'bg-gray-50 dark:bg-gray-800']"
       >
         <template #leading>
