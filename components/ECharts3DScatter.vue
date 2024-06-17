@@ -1,5 +1,10 @@
 <template>
-  <div id="main" style="width: 100%; height: 600px"></div>
+  <UDashboardCard :ui="{ body: { padding: '!pb-3 !px-0' } }">
+    <template #header>
+      <p class="text-xl font-semibold">Datos 3D</p>
+    </template>
+    <div id="main" style="width: 100%; height: 600px"></div>
+  </UDashboardCard>
 </template>
 
 <script>

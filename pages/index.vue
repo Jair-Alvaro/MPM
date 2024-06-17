@@ -13,7 +13,7 @@ const period = ref<Period>("daily");
   <NuxtLayout>
     <UDashboardPage>
       <UDashboardPanel grow>
-        <UDashboardNavbar title="Home">
+        <UDashboardNavbar title="Dashboard" class="mt-2">
           <template #right>
             <DashboardHeader />
           </template>
@@ -32,8 +32,13 @@ const period = ref<Period>("daily");
         <UDashboardPanelContent>
           
           <FrequencySpectrum />
-          <TemperatureChart class="mt-8" />
-          <ECharts3DScatter />
+
+          <div class="grid lg:grid-cols-2 lg:items-start gap-8 mt-8">
+            <!-- ~/components/home/HomeSales.vue -->
+            <TemperatureChart />
+            <!-- ~/components/home/HomeCountries.vue -->
+            <ECharts3DScatter />
+          </div>
 
           <div class="grid lg:grid-cols-2 lg:items-start gap-8 mt-8">
             <!-- ~/components/home/HomeSales.vue -->

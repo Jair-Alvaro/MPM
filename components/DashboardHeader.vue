@@ -40,7 +40,7 @@ const items = [
         {
             label: "New user",
             icon: "i-heroicons-user-plus",
-            to: "/users",
+            to: "/register",
         },
     ],
 ];

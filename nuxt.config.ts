@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     pass: process.env.DBPASSWORD,
     authSource: process.env.DBAUTHSOURCE
   },
+ 
   build: {
     transpile: ['echarts', 'zrender', 'tslib'],
   },

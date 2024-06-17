@@ -1,12 +1,18 @@
-
 export default defineNuxtRouteMiddleware((to, _from) => {
   const user = useSupabaseUser();
 
-  if (to.path === "/login" && user.value) {
+  // Redirigir a la página principal si el usuario intenta acceder a /login estando autenticado
+  if (user.value && to.path === "/login") {
     return navigateTo("/");
   }
 
-  if (to.path !== "/login" && !user.value) {
+  // Permitir acceso a /login si el usuario no está autenticado
+  if (!user.value && to.path === "/login") {
+    return;
+  }
+
+  // Redirigir a /login si el usuario no está autenticado y quiere acceder a cualquier otra ruta
+  if (!user.value) {
     return navigateTo("/login");
   }
 });

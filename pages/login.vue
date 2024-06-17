@@ -9,7 +9,9 @@
       >
         <h2 class="mb-5 text-lg font-medium text-[#aac8e4]">Login</h2>
         <div class="relative mb-4">
-          <label for="email" class="text-sm leading-7 text-gray-400">Email</label>
+          <label for="email" class="text-sm leading-7 text-gray-400"
+            >Email</label
+          >
           <input
             v-model="email"
             type="email"
@@ -19,10 +21,11 @@
             required
           />
         </div>
- 
- 
+
         <div class="relative mb-4">
-          <label for="password" class="text-sm leading-7 text-gray-400">Password</label>
+          <label for="password" class="text-sm leading-7 text-gray-400"
+            >Password</label
+          >
           <input
             id="password"
             v-model="password"
@@ -32,8 +35,7 @@
             required
           />
         </div>
- 
- 
+
         <button
           type="submit"
           class="rounded border-0 bg-[#42b883] py-2 px-8 font-sans font-bold text-[#213547] transition-colors duration-500 hover:bg-[#42d392] focus:outline-none"
@@ -48,55 +50,43 @@
         <p class="mt-3 text-xs">Don't have an account yet?</p>
         <nuxt-link
           class="w-fit text-sm text-[#aac8e4] hover:text-[#42b883]"
-          to="/signup"
+          to="/register"
           >Register</nuxt-link
         >
       </form>
     </section>
   </main>
- </template>
- 
- 
- <script setup>
- 
- 
- 
- 
- const user = useSupabaseUser()
- const email = ref('')
- const password = ref('')
- const errorMsg = ref('')
- 
- 
- const { auth } = useSupabaseClient()
- 
- 
- const userLogin = async () => {
+</template>
+<script setup>
+const user = useSupabaseUser();
+const email = ref("");
+const password = ref("");
+const errorMsg = ref("");
+
+const { auth } = useSupabaseClient();
+
+const userLogin = async () => {
   try {
     const { error } = await auth.signInWithPassword({
       email: email.value,
       password: password.value,
-    })
- 
- 
-    if (error) throw error
- 
- 
-    email.value = ''
-    password.value = ''
+    });
+
+    if (error) throw error;
+
+    email.value = "";
+    password.value = "";
   } catch (error) {
-    errorMsg.value = error.message
+    errorMsg.value = error.message;
     setTimeout(() => {
-      errorMsg.value = ''
-    }, 3000)
+      errorMsg.value = "";
+    }, 3000);
   }
- }
- 
- 
- watchEffect(() => {
+};
+
+watchEffect(() => {
   if (user.value) {
-    return navigateTo('/')
+    navigateTo("/");
   }
- })
- </script>
- 
+});
+</script>

@@ -30,7 +30,7 @@ const period = ref<Period>("daily");
   <NuxtLayout>
     <UDashboardPage>
       <UDashboardPanel grow>
-        <UDashboardNavbar title="Reportes">
+        <UDashboardNavbar title="Reportes" class="mt-2">
           <template #right>
             <UTooltip text="Notifications" :shortcuts="['N']">
               <UButton

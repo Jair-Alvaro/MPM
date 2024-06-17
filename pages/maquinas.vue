@@ -2,7 +2,7 @@
   <NuxtLayout>
     <UDashboardPage>
       <UDashboardPanel grow>
-        <UDashboardNavbar title="Máquinas">
+        <UDashboardNavbar title="Máquinas" class="mt-2">
           <template #right>
             <DashboardHeader />
           </template>
@@ -61,9 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
 import { createClient } from '@supabase/supabase-js';
-import * as XLSX from 'xlsx';
 
 const supabase = createClient(
   "https://nqpfkwmkparhpxjovixf.supabase.co",
