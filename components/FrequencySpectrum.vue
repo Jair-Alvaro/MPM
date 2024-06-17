@@ -2,6 +2,7 @@
   <UDashboardCard :ui="{ body: { padding: '!pb-3 !px-0' } }">
     <template #header>
       <p class="text-xl font-semibold">Espectro de Frecuencia</p>
+      <pre>{{data}}</pre>
     </template>
 
     <div class="container" ref="cardRef">
@@ -21,7 +22,7 @@ const cardRef = ref(null); // Agregar referencia al contenedor del componente
 const showGraph = async () => {
   try {
     // Obtener datos de la API
-    const response = await axios.get("http://localhost:3001/api/spectrals");
+    const response = await axios.get("http://34.207.208.96:9000/api/spectral");
     const data = response.data[0]; // Se asume que la respuesta es un arreglo con un solo elemento
 
     // Muestreo de datos: Tomar cada 10mo punto de datos para mayor claridad
