@@ -5,8 +5,8 @@ const color = computed(() =>
   colorMode.value === "dark" ? "#111827" : "white"
 );
 
-const title = "Nuxt UI  - Proyecto Mineria";
-const description = "Nuxt.";
+const title = "Nuxt Proyecto Mineria";
+const description = "Proyecto Mineria";
 
 useSeoMeta({
   title,

@@ -6,6 +6,10 @@ async function signOut() {
   await supabase.auth.signOut();
   navigateTo("/");
 }
+// Referencia reactiva para almacenar los detalles del usuario
+const user = ref(null);
+
+// Obtener los detalles del usuario al montar el componente
 
 const items = computed(() => [
   [
@@ -33,6 +37,8 @@ const items = computed(() => [
     },
   ],
 ]);
+
+
 </script>
 
 <template>
@@ -68,7 +74,7 @@ const items = computed(() => [
       <div class="text-left">
         <p>Registrado como</p>
         <p class="truncate font-medium text-gray-900 dark:text-white">
-          fan@nuxtlabs.com
+          {{ user ? user.email : "No hay usuario autenticado" }}
         </p>
       </div>
     </template>
