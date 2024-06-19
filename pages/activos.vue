@@ -1,169 +1,151 @@
 <template>
   <NuxtLayout>
     <div class="container">
-      <br />
-      <button class="btn-area" @click="mostrarFormularioArea">+ Área de Trabajo</button><br />
-
-      <!-- Áreas de Trabajo -->
-      <div class="area-trabajo-section">
-        <br />
-        <AreaTrabajo
-          v-if="mostrarFormArea"
-          @cerrarFormulario="cerrarFormularioArea"
-          @areaAgregada="actualizarAreasTrabajo"
-        />
-        <ul>
-          <li v-for="area in areasTrabajo" :key="area.id" class="area-item">
-            <div class="card">
-              <!-- Parte izquierda de la carta -->
-              <div class="card-left">
+      <div class="left-column">
+        <div class="card-lista" id="my-card">
+          <h2>Áreas de Trabajo</h2><br/>
+          <div class="filter-dropdown">
+            <select v-model="filtro" class="filter-select">
+              <option value="">Todas las áreas</option>
+              <option v-for="area in areasTrabajo" :value="area.nombre" :key="area.id">{{ area.nombre }}</option>
+            </select>
+          </div>
+          <ul class="area-list">
+            <li v-for="area in areasFiltradas" :key="area.id" class="area-item" @click="seleccionarArea(area)">
+              <div class="area-card">
                 <span v-if="area.nombre" class="icon icon-area">🏢</span>
+                <span class="area-title">{{ area.nombre }}</span>
               </div>
-
-              <!-- Parte central de la carta -->
-              <div class="card-center">
-                <span class="name">{{ truncateText(area.nombre) }}</span>
-              </div>
-
-              <!-- Parte derecha de la carta -->
-              <div class="card-right">
-                <button class="btn-subarea" @click="mostrarFormularioSubarea(area.id)">+</button>
-              </div>
-            </div>
-            <ul class="subarea-list">
-              <li v-for="subarea in area.subareas" :key="subarea.id" class="subarea-item">
-                <div class="card">
-                  <!-- Parte izquierda de la carta -->
-                  <div class="card-left">
-                    <span v-if="subarea.nombre" class="icon icon-subarea">📁</span>
-                  </div>
-
-                  <!-- Parte central de la carta -->
-                  <div class="card-center">
-                    <span class="name">{{ truncateText(subarea.nombre) }}</span>
-                  </div>
-
-                  <!-- Parte derecha de la carta -->
-                  <div class="card-right">
-                    <button class="btn-activo" @click="mostrarFormularioActivos(subarea.id)">+</button>
-                  </div>
-                </div>
-                <ul class="activo-list">
-                  <!-- Activos -->
-                  <li v-for="activo in subarea.activos" :key="activo.id" class="activo-item">
-                    <div class="card">
-                      <!-- Parte izquierda de la carta -->
-                      <div class="card-left">
-                        <span v-if="activo.nombre" class="icon icon-activo">📂</span>
-                      </div>
-
-                      <!-- Parte central de la carta -->
-                      <div class="card-center">
-                        <span class="name">{{ truncateText(activo.nombre) }}</span>
-                      </div>
-
-                      <!-- Parte derecha de la carta -->
-                      <div class="card-right">
-                        <button class="btn-subconjunto" @click="mostrarFormularioSubconjunto(activo.id)">+</button>
-                      </div>
-                    </div>
-                    <ul class="subconjunto-list">
-                      <!-- Subconjuntos -->
-                      <li v-for="subconjunto in activo.subconjuntos" :key="subconjunto.id" class="subconjunto-item">
-                        <div class="card">
-                          <!-- Parte izquierda de la carta -->
-                          <div class="card-left">
-                            <span v-if="subconjunto.nombre" class="icon icon-subconjunto">🚜</span>
-                          </div>
-
-                          <!-- Parte central de la carta -->
-                          <div class="card-center">
-                            <span class="name">{{ truncateText(subconjunto.nombre) }}</span>
-                          </div>
-
-                          <!-- Parte derecha de la carta -->
-                          <div class="card-right">
-                            <button class="btn-componente" @click="mostrarFormularioComponente(subconjunto.id)">+</button>
-                            <button class="btn-spot-subconjunto" @click="mostrarFormularioSpotSubconjunto(subconjunto.id)">+</button>
-                          </div>
-                        </div>
-                        <ul class="spot-list">
-                          <!-- Spots -->
-                          <li v-for="spot in subconjunto.spots" :key="spot.id" class="spot-item">
-                            <div class="card">
-                              <!-- Parte izquierda de la carta -->
-                              <div class="card-left">
-                                <span v-if="spot.nombre" class="icon icon-spot">📍</span>
-                              </div>
-
-                              <!-- Parte central de la carta -->
-                              <div class="card-center">
-                                <span class="spot">{{ truncateText(spot.nombre) }}</span>
-                              </div>
-
-                              <div class="card-right"> </div>
-                            </div>
-                          </li>
-                          <!-- Componentes -->
-                          <li v-for="componente in subconjunto.componentes" :key="componente.id" class="componente-item">
-                            <div class="card">
-                              <!-- Parte izquierda de la carta -->
-                              <div class="card-left">
-                                <span v-if="componente.nombre" class="icon icon-componente">⚙️</span>
-                              </div>
-
-                              <!-- Parte central de la carta -->
-                              <div class="card-center">
-                                <span class="name">{{ truncateText(componente.nombre) }}</span>
-                              </div>
-
-                              <!-- Parte derecha de la carta -->
-                              <div class="card-right">
-                                <button class="btn-spot-componente" @click="mostrarFormularioSpotComponente(componente.id)">+</button>
-                              </div>
-                            </div>
-                            <ul class="spot-list">
-                              <!-- Spots del Componente -->
-                              <li v-for="spot in componente.spots" :key="spot.id" class="spot-item">
-                                <div class="card">
-                                  <!-- Parte izquierda de la carta -->
-                                  <div class="card-left">
-                                    <span v-if="spot.nombre" class="icon icon-spot">📍</span>
-                                  </div>
-
-                                  <!-- Parte central de la carta -->
-                                  <div class="card-center">
-                                    <span class="spot">{{ truncateText(spot.nombre) }}</span>
-                                  </div>
-                                  <div class="card-right"> </div>
-                                </div>
-                              </li>
-                            </ul>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-            <br /><br />
-          </li>
-        </ul>
+            </li>
+          </ul>
+        </div>
       </div>
 
-      <!-- Formularios -->
-      <SubAreasTrabajo v-if="mostrarFormSubarea" :areaId="areaId" @cerrarFormulario="cerrarFormularioSubarea" @subareaAgregada="actualizarSubareasTrabajo" />
-      <ActivosForm v-if="mostrarFormActivos" :subareaId="subareaId" @cerrarFormulario="cerrarFormularioActivos" @activoAgregado="actualizarActivos" />
-      <SubconjuntosForm v-if="mostrarFormSubconjunto" :activoId="activoId" @cerrarFormularioSubconjunto="cerrarFormularioSubconjunto" @SubconjuntoAgregado="actualizarSubconjunto" />
-      <ComponentesForm v-if="mostrarFormComponente" :subconjuntoId="subconjuntoId" @cerrarFormularioComponentes="cerrarFormularioComponente" @ComponenteAgregado="actualizarComponentes" />
-      <SpotsForm v-if="mostrarFormSpot" :subconjuntoId="subconjuntoIdSpot" :componenteId="componenteIdSpot" @cerrarFormularioSpots="cerrarFormularioSpot" @SpotAgregado="actualizarSpots" />
+      <div class="right-column">
+        <button class="btn-area" @click="mostrarFormularioArea"> + Área </button><br />
+
+        <div class="area-trabajo-section">
+          <br />
+          <AreaTrabajo
+            v-if="mostrarFormArea"
+            @cerrarFormulario="cerrarFormularioArea"
+            @areaAgregada="actualizarAreasTrabajo"
+          />
+          <ul>
+            <li v-for="area in areasTrabajo" :key="area.id" class="area-item">
+              <div class="card">
+                <div class="card-left">
+                  <span v-if="area.nombre" class="icon icon-area">🏢</span>
+                </div>
+                <div class="card-center">
+                  <span class="name">{{ truncateText(area.nombre) }}</span>
+                </div>
+                <div class="card-right">
+                  <button class="btn-subarea" @click="mostrarFormularioSubarea(area.id)">+</button>
+                </div>
+              </div>
+              <ul class="subarea-list">
+                <li v-for="subarea in area.subareas" :key="subarea.id" class="subarea-item">
+                  <div class="card">
+                    <div class="card-left">
+                      <span v-if="subarea.nombre" class="icon icon-subarea">📁</span>
+                    </div>
+                    <div class="card-center">
+                      <span class="name">{{ truncateText(subarea.nombre) }}</span>
+                    </div>
+                    <div class="card-right">
+                      <button class="btn-activo" @click="mostrarFormularioActivos(subarea.id)">+</button>
+                    </div>
+                  </div>
+                  <ul class="activo-list">
+                    <li v-for="activo in subarea.activos" :key="activo.id" class="activo-item">
+                      <div class="card">
+                        <div class="card-left">
+                          <span v-if="activo.nombre" class="icon icon-activo">📂</span>
+                        </div>
+                        <div class="card-center">
+                          <span class="name">{{ truncateText(activo.nombre) }}</span>
+                        </div>
+                        <div class="card-right">
+                          <button class="btn-subconjunto" @click="mostrarFormularioSubconjunto(activo.id)">+</button>
+                        </div>
+                      </div>
+                      <ul class="subconjunto-list">
+                        <li v-for="subconjunto in activo.subconjuntos" :key="subconjunto.id" class="subconjunto-item">
+                          <div class="card">
+                            <div class="card-left">
+                              <span v-if="subconjunto.nombre" class="icon icon-subconjunto">🚜</span>
+                            </div>
+                            <div class="card-center">
+                              <span class="name">{{ truncateText(subconjunto.nombre) }}</span>
+                            </div>
+                            <div class="card-right">
+                              <button class="btn-componente" @click="mostrarFormularioComponente(subconjunto.id)">+</button>
+                              <button class="btn-spot-subconjunto" @click="mostrarFormularioSpotSubconjunto(subconjunto.id)">+</button>
+                            </div>
+                          </div>
+                          <ul class="spot-list">
+                            <li v-for="spot in subconjunto.spots" :key="spot.id" class="spot-item">
+                              <div class="card">
+                                <div class="card-left">
+                                  <span v-if="spot.nombre" class="icon icon-spot">📍</span>
+                                </div>
+                                <div class="card-center">
+                                  <span class="spot">{{ truncateText(spot.nombre) }}</span>
+                                </div>
+                                <div class="card-right"> </div>
+                              </div>
+                            </li>
+                            <li v-for="componente in subconjunto.componentes" :key="componente.id" class="componente-item">
+                              <div class="card">
+                                <div class="card-left">
+                                  <span v-if="componente.nombre" class="icon icon-componente">⚙️</span>
+                                </div>
+                                <div class="card-center">
+                                  <span class="name">{{ truncateText(componente.nombre) }}</span>
+                                </div>
+                                <div class="card-right">
+                                  <button class="btn-spot-componente" @click="mostrarFormularioSpotComponente(componente.id)">+</button>
+                                </div>
+                              </div>
+                              <ul class="spot-list">
+                                <li v-for="spot in componente.spots" :key="spot.id" class="spot-item">
+                                  <div class="card">
+                                    <div class="card-left">
+                                      <span v-if="spot.nombre" class="icon icon-spot">📍</span>
+                                    </div>
+                                    <div class="card-center">
+                                      <span class="spot">{{ truncateText(spot.nombre) }}</span>
+                                    </div>
+                                    <div class="card-right"> </div>
+                                  </div>
+                                </li>
+                              </ul>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+              <br /><br />
+            </li>
+          </ul>
+        </div>
+
+        <SubAreasTrabajo v-if="mostrarFormSubarea" :areaId="areaId" @cerrarFormulario="cerrarFormularioSubarea" @subareaAgregada="actualizarSubareasTrabajo" />
+        <ActivosForm v-if="mostrarFormActivos" :subareaId="subareaId" @cerrarFormulario="cerrarFormularioActivos" @activoAgregado="actualizarActivos" />
+        <SubconjuntosForm v-if="mostrarFormSubconjunto" :activoId="activoId" @cerrarFormularioSubconjunto="cerrarFormularioSubconjunto" @SubconjuntoAgregado="actualizarSubconjunto" />
+        <ComponentesForm v-if="mostrarFormComponente" :subconjuntoId="subconjuntoId" @cerrarFormularioComponentes="cerrarFormularioComponente" @ComponenteAgregado="actualizarComponentes" />
+        <SpotsForm v-if="mostrarFormSpot" :subconjuntoId="subconjuntoIdSpot" :componenteId="componenteIdSpot" @cerrarFormularioSpots="cerrarFormularioSpot" @SpotAgregado="actualizarSpots" />
+      </div>
     </div>
   </NuxtLayout>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { createClient } from "@supabase/supabase-js";
 import AreaTrabajo from "@/components/FormActivo/AreaTrabajo.vue";
 import SubAreasTrabajo from "@/components/FormActivo/subareasTrabajo.vue";
@@ -178,6 +160,7 @@ const supabase = createClient(
 );
 
 const areasTrabajo = ref([]);
+const filtro = ref("");
 const mostrarFormArea = ref(false);
 const mostrarFormSubarea = ref(false);
 const mostrarFormActivos = ref(false);
@@ -190,6 +173,7 @@ const activoId = ref(null);
 const subconjuntoId = ref(null);
 const subconjuntoIdSpot = ref(null);
 const componenteIdSpot = ref(null);
+const areaSeleccionada = ref(null);
 
 onMounted(() => {
   cargarAreasTrabajo();
@@ -238,6 +222,16 @@ async function cargarAreasTrabajo() {
     console.error("Error al cargar las áreas de trabajo:", error.message);
   }
 }
+
+function seleccionarArea(area) {
+  areaSeleccionada.value = area;
+}
+
+const areasFiltradas = computed(() => {
+  return areasTrabajo.value.filter(area => {
+    return area.nombre.toLowerCase().includes(filtro.value.toLowerCase());
+  });
+});
 
 function mostrarFormularioArea() {
   mostrarFormArea.value = true;
@@ -329,13 +323,122 @@ function truncateText(text) {
 }
 </script>
 
+
+
+
 <style scoped>
 .container {
-  margin: 20px;
+  margin: 30px;
+  display: flex;
 }
 
+.left-column {
+  width: 40%;
+
+}
+#my-card {
+  border: 2px solid #05a396;
+  border-radius: 10px;
+  padding: 10px;
+  width: 90%;
+  height: 100%;
+}
+.input-area {
+  margin-bottom: 1rem;
+}
+
+.area-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.area-item {
+  padding: 0.5rem;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.area-item:last-child {
+  border-bottom: none;
+}
+.filter-dropdown {
+  margin-bottom: 1rem;
+}
+
+.filter-select:focus {
+  outline: none;
+}
+.filter-select{
+  padding: 0.5rem;
+  border: 2px solid #05a396;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+
+/* Estilos para el modo oscuro */
+.dark-mode .filter-select {
+  border-color: #ffffff; /* Cambiar el color del borde en modo oscuro */
+  color: #ffffff; /* Cambiar el color del texto en modo oscuro */
+}
+
+.dark-mode .filter-select option {
+  color: #05a396; /* Cambiar el color del texto de las opciones en modo oscuro */
+}
+
+
+/* Estilos para las cartas de áreas de trabajo */
+.card-lista {
+  border: 2px solid #05a396;
+  border-radius: 10px;
+  padding: 10px;
+  width: 90%;
+  height: 100%;
+}
+
+.area-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.area-item {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.area-item:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.area-card {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 2px solid #05a396;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+
+.icon {
+  font-size: 20px;
+  margin-right: 20px;
+}
+
+.area-title {
+  font-size: 15px;
+}
+
+
+.right-column {
+  width: 60%;
+  border: 2px solid #05a396;
+  border-radius: 10px;
+  padding: 10px;
+}
 .area-trabajo-section {
-  max-height: 97%;
+  max-height: 90%;
   overflow-y: auto;
 }
 
@@ -374,33 +477,6 @@ function truncateText(text) {
   text-align: right;
 }
 
-.icon {
-  margin-right: 0.25rem;
-}
-
-.icon-area {
-  color: blue;
-}
-
-.icon-subarea {
-  color: green;
-}
-
-.icon-activo {
-  color: red;
-}
-
-.icon-subconjunto {
-  color: yellow;
-}
-
-.icon-componente {
-  color: purple;
-}
-
-.icon-spot {
-  color: cyan;
-}
 
 .btn-area {
   margin-bottom: 20px;

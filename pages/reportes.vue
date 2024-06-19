@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { sub } from "date-fns";
 import type { Period, Range } from "~/types";
+import Alerta from '~/components/Alerta.vue';
 
 const { isNotificationsSlideoverOpen } = useDashboard();
 
@@ -54,7 +55,6 @@ const period = ref<Period>("daily");
             </UDropdown>
           </template>
         </UDashboardNavbar>
-
         <UDashboardToolbar>
           <template #left>
             <!-- ~/components/home/HomeDateRangePicker.vue -->
@@ -63,6 +63,11 @@ const period = ref<Period>("daily");
             <!-- ~/components/home/HomePeriodSelect.vue -->
             <HomePeriodSelect v-model="period" :range="range" />
           </template>
+
+          <template #right>
+            <Alerta />
+          </template>
+          
         </UDashboardToolbar>
 
         <UDashboardPanelContent>
@@ -74,8 +79,9 @@ const period = ref<Period>("daily");
             <!-- ~/components/home/HomeSales.vue -->
             <HomeSales />
             <!-- ~/components/home/HomeCountries.vue -->
-
             <HomeCountries />
+          </div>
+          <div class="mt-8">
           </div>
         </UDashboardPanelContent>
       </UDashboardPanel>

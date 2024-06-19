@@ -62,6 +62,8 @@
 
 <script setup lang="ts">
 import { createClient } from '@supabase/supabase-js';
+import * as XLSX from 'xlsx';
+
 
 const supabase = createClient(
   "https://nqpfkwmkparhpxjovixf.supabase.co",
