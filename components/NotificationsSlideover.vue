@@ -5,12 +5,13 @@ import type { Notification } from '~/types'
 const { isNotificationsSlideoverOpen } = useDashboard()
 
 const { data: notifications } = await useFetch<Notification[]>('/api/notifications')
+
 </script>
 
 <template>
   <UDashboardSlideover
     v-model="isNotificationsSlideoverOpen"
-    title="Notifications"
+    title="Notificaciones"
   >
     <NuxtLink
       v-for="notification in notifications"

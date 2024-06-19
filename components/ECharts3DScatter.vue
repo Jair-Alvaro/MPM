@@ -3,7 +3,7 @@
     <template #header>
       <p class="text-xl font-semibold">Datos 3D</p>
     </template>
-    <div id="main" style="width: 100%; height: 600px"></div>
+    <div id="main" style="width: 100%; height: 400px"></div>
   </UDashboardCard>
 </template>
 
@@ -89,7 +89,20 @@ export default {
       this.drawChart();
     },
     drawChart() {
-      const symbolSize = 2.5;
+      const symbolSize = 10;
+
+      // Nodo ficticio para la línea espectral
+      const spectralNode = {
+        Income: 25000,
+        "Life Expectancy": 78,
+        Population: 8000000,
+        Country: "Spectral Node",
+        Year: "2022",
+      };
+
+      // Copia los datos originales y agrega el nodo ficticio al final
+      const allData = [...this.data, spectralNode];
+
       this.option = {
         grid3D: {},
         xAxis3D: { type: "category" },
@@ -103,7 +116,7 @@ export default {
             "Country",
             { name: "Year", type: "ordinal" },
           ],
-          source: this.data,
+          source: allData,
         },
         series: [
           {
@@ -116,10 +129,36 @@ export default {
               tooltip: [0, 1, 2, 3, 4],
             },
           },
+          {
+            type: "line3D",
+            data: [this.data[this.data.length - 1], spectralNode],
+            lineStyle: {
+              width: 4,
+              opacity: 0.7,
+              color: "red",
+            },
+          },
         ],
+        toolbox: {
+          feature: {
+            dataZoom: {
+              yAxisIndex: "none",
+            },
+            restore: {},
+            saveAsImage: {},
+          },
+        },
       };
+
       this.myChart.setOption(this.option);
     },
   },
 };
 </script>
+
+<style scoped>
+.chart-container {
+  width: 100%;
+  height: 400px; /* Ajusta esta altura según sea necesario */
+}
+</style>

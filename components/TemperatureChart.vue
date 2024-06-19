@@ -3,13 +3,14 @@
     <template #header>
       <p class="text-xl font-semibold">Temperaturas Diarias</p>
     </template>
-    <div ref="chart" style="width: 100%; height: 600px"></div>
+    <div ref="chart" class="chart-container"></div>
   </UDashboardCard>
 </template>
 
 <script setup>
 import * as echarts from 'echarts';
 import axios from 'axios';
+import { onMounted, ref } from 'vue';
 
 const chart = ref(null);
 
@@ -131,5 +132,8 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* You can place your CSS styles here */
+.chart-container {
+  width: 100%;
+  height: 400px; /* Ajusta esta altura según sea necesario */
+}
 </style>
