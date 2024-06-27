@@ -37,7 +37,7 @@
     "mongoose": "^8.4.1",
     "nuxt": "^3.11.2",
     "nuxt-mongoose": "^1.0.6",
-  
+    "twilio": "^5.2.0",
     "v-calendar": "^3.1.2",
     "vue-echarts": "^6.7.3",
     "xlsx": "^0.18.5"

@@ -355,23 +355,68 @@ const checkLimits = (seriesData) => {
     const mode = serie.name.split(" ")[1];
     const limit = getLimitForMode(mode);
 
-    if (mode === "X") {
-      const maxAmplitude = Math.max(...currentRecord.modoX.amplitud);
-      if (maxAmplitude > limit) {
-        alert(`¡Alerta! El modo X ha superado el límite de ${limit}`);
-      }
-    } else if (mode === "Y") {
-      const maxAmplitude = Math.max(...currentRecord.modoY.amplitud);
-      if (maxAmplitude > limit) {
-        alert(`¡Alerta! El modo Y ha superado el límite de ${limit}`);
-      }
-    } else if (mode === "Z") {
-      const maxAmplitude = Math.max(...currentRecord.modoZ.amplitud);
-      if (maxAmplitude > limit) {
-        alert(`¡Alerta! El modo Z ha superado el límite de ${limit}`);
-      }
+    let maxAmplitude;
+    switch (mode) {
+      case "X":
+        maxAmplitude = Math.max(...currentRecord.modoX.amplitud);
+        break;
+      case "Y":
+        maxAmplitude = Math.max(...currentRecord.modoY.amplitud);
+        break;
+      case "Z":
+        maxAmplitude = Math.max(...currentRecord.modoZ.amplitud);
+        break;
+      default:
+        maxAmplitude = 0;
+    }
+
+    if (maxAmplitude > limit) {
+      sendWhatsappMessage(mode, limit, maxAmplitude);
     }
   });
+};
+/* ingresar sus keys de Twilio*/
+}
+const sendWhatsappMessage = async (mode, limit, maxAmplitude) => {
+  const accountSid = "Sid";
+  const authToken = "Token";
+  const from = "whatsapp:+1415";
+  const to = "whatsapp:+519637";
+  const message = `¡Alerta! El modo ${mode} ha superado el límite de ${limit}. Máxima amplitud registrada: ${maxAmplitude}`;
+
+  try {
+    const response = await fetch(
+      `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: "Basic " + btoa(`${accountSid}:${authToken}`),
+        },
+        body: new URLSearchParams({
+          From: from,
+          To: to,
+          Body: message,
+        }),
+      }
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Mensaje de WhatsApp enviado correctamente:", data.sid);
+      // Aquí podrías actualizar el estado o mostrar un mensaje de éxito
+      alert("Mensaje de WhatsApp enviado correctamente");
+    } else {
+      const errorMessage = await response.text();
+      console.error("Error al enviar el mensaje de WhatsApp:", errorMessage);
+      // Manejar el caso de error, podrías mostrar un mensaje de error
+      alert("Error al enviar el mensaje de WhatsApp");
+    }
+  } catch (error) {
+    console.error("Error al enviar el mensaje de WhatsApp:", error);
+    // Manejar el caso de error, podrías mostrar un mensaje de error
+    alert("Error al enviar el mensaje de WhatsApp");
+  }
 };
 
 const getLimitForMode = (mode) => {
@@ -414,8 +459,6 @@ const prepareData = (frecuencia, amplitud, yAxisIndex) => {
 };
 
 onMounted(fetchData);
-
-
 </script>
 
 <style scoped>

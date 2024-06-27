@@ -1,6 +1,7 @@
 <template>
   <NuxtLayout>
     <div class="container">
+      
       <div class="left-column">
         <div class="card-lista" id="my-card">
           <h2>Áreas de Trabajo</h2><br/>
@@ -14,7 +15,14 @@
             <li v-for="area in areasFiltradas" :key="area.id" class="area-item" @click="seleccionarArea(area)">
               <div class="area-card">
                 <span v-if="area.nombre" class="icon icon-area">🏢</span>
-                <span class="area-title">{{ area.nombre }}</span>
+                <span class="area-title">{{ area.nombre }} --> </span>
+                <div class="area-info">
+                  <span class="icon">📁 {{ area.subareas.length }}</span>
+                  <span class="icon">📂 {{ sumarCantidadActivos(area) }}</span>
+                  <span class="icon">🚜 {{ sumarCantidadSubconjuntos(area) }}</span>
+                  <span class="icon">⚙️ {{ sumarCantidadComponentes(area) }}</span>
+                  <span class="icon">📍 {{ sumarCantidadSpots(area) }}</span>
+                </div>
               </div>
             </li>
           </ul>
@@ -321,6 +329,52 @@ function truncateText(text) {
   const maxLength = 20;
   return text.length > maxLength ? text.substr(0, maxLength - 3) + "..." : text;
 }
+
+function sumarCantidadActivos(area) {
+  let cantidad = 0;
+  for (const subarea of area.subareas) {
+    cantidad += subarea.activos.length;
+  }
+  return cantidad;
+}
+
+function sumarCantidadSubconjuntos(area) {
+  let cantidad = 0;
+  for (const subarea of area.subareas) {
+    for (const activo of subarea.activos) {
+      cantidad += activo.subconjuntos.length;
+    }
+  }
+  return cantidad;
+}
+
+function sumarCantidadComponentes(area) {
+  let cantidad = 0;
+  for (const subarea of area.subareas) {
+    for (const activo of subarea.activos) {
+      for (const subconjunto of activo.subconjuntos) {
+        cantidad += subconjunto.componentes.length;
+      }
+    }
+  }
+  return cantidad;
+}
+
+function sumarCantidadSpots(area) {
+  let cantidad = 0;
+  for (const subarea of area.subareas) {
+    for (const activo of subarea.activos) {
+      for (const subconjunto of activo.subconjuntos) {
+        cantidad += subconjunto.spots.length; // Sumar spots del subconjunto
+        for (const componente of subconjunto.componentes) {
+          cantidad += componente.spots.length; // Sumar spots del componente
+        }
+      }
+    }
+  }
+  return cantidad;
+}
+
 </script>
 
 
@@ -334,8 +388,8 @@ function truncateText(text) {
 
 .left-column {
   width: 40%;
-
 }
+
 #my-card {
   border: 2px solid #05a396;
   border-radius: 10px;
@@ -343,6 +397,7 @@ function truncateText(text) {
   width: 90%;
   height: 100%;
 }
+
 .input-area {
   margin-bottom: 1rem;
 }
@@ -350,6 +405,8 @@ function truncateText(text) {
 .area-list {
   list-style-type: none;
   padding-left: 0;
+  max-height: 85%; /* Ajusta la altura según sea necesario */
+  overflow-y: auto;
 }
 
 .area-item {
@@ -361,6 +418,7 @@ function truncateText(text) {
 .area-item:last-child {
   border-bottom: none;
 }
+
 .filter-dropdown {
   margin-bottom: 1rem;
 }
@@ -368,14 +426,14 @@ function truncateText(text) {
 .filter-select:focus {
   outline: none;
 }
-.filter-select{
+
+.filter-select {
   padding: 0.5rem;
   border: 2px solid #05a396;
   border-radius: 5px;
   cursor: pointer;
   width: 100%;
 }
-
 
 /* Estilos para el modo oscuro */
 .dark-mode .filter-select {
@@ -386,7 +444,6 @@ function truncateText(text) {
 .dark-mode .filter-select option {
   color: #05a396; /* Cambiar el color del texto de las opciones en modo oscuro */
 }
-
 
 /* Estilos para las cartas de áreas de trabajo */
 .card-lista {
@@ -420,16 +477,16 @@ function truncateText(text) {
   transition: background-color 0.3s ease;
 }
 
-
 .icon {
   font-size: 20px;
-  margin-right: 20px;
+  margin-right: 12px;
+
 }
 
 .area-title {
   font-size: 15px;
-}
 
+}
 
 .right-column {
   width: 60%;
@@ -437,13 +494,10 @@ function truncateText(text) {
   border-radius: 10px;
   padding: 10px;
 }
+
 .area-trabajo-section {
   max-height: 90%;
   overflow-y: auto;
-}
-
-.area-item {
-  margin-bottom: 20px;
 }
 
 .card {
@@ -477,15 +531,16 @@ function truncateText(text) {
   text-align: right;
 }
 
-
 .btn-area {
-  margin-bottom: 20px;
+  margin: 0 auto; /* Centrado horizontal y margen inferior */
   background-color: #05a396; /* Cambio de color */
   color: white;
   border: none;
   border-radius: 5px;
   padding: 0.5rem 1rem;
   cursor: pointer;
+  width: 30%;
+  display: block; /* Asegúrate de que el botón se comporte como un bloque */
 }
 
 .btn-area:hover {
@@ -532,4 +587,5 @@ function truncateText(text) {
 .componente-item {
   margin-bottom: 0.5rem;
 }
+
 </style>
